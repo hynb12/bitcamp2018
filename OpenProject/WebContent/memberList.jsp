@@ -24,7 +24,7 @@ td, th {
 <body>
 	<%@include file="menu.jsp"%>
 	<form action="">
-	
+
 		<!--     메인    -->
 		<div id="header">Member Manager</div>
 		<div id="warp">
@@ -40,7 +40,7 @@ td, th {
 							<th>사진</th>
 							<th>관리</th>
 						</tr>
-						<%							
+						<%
 							//List 객체 선언
 							List members = new ArrayList();
 

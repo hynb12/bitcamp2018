@@ -28,16 +28,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>WebContent/WEB-INF/lib/jstl.jar</name>
-			<type>1</type>
-			<location>C:/Users/1027/Downloads/jakarta-taglibs-standard-1.1.2/jakarta-taglibs-standard-1.1.2/lib/jstl.jar</location>
-		</link>
-		<link>
-			<name>WebContent/WEB-INF/lib/standard.jar</name>
-			<type>1</type>
-			<location>C:/Users/1027/Downloads/jakarta-taglibs-standard-1.1.2/jakarta-taglibs-standard-1.1.2/lib/standard.jar</location>
-		</link>
-	</linkedResources>
 </projectDescription>

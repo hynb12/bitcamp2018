@@ -9,25 +9,6 @@
 	String id = (String) request.getSession(false).getAttribute("userId");
 	String pw = (String) request.getSession(false).getAttribute("password");
 	String name = "";
-	String photo = "";
-	//List 객체 선언
-	//지역변수 개념이다. 초기화 꼭 필요함
-	List members = null;
-	members = new ArrayList();
-
-	members = (List) application.getAttribute("k1");
-
-	for (int i = 0; i < members.size(); i++) {
-		//메서드 사용하기위해 형변환
-		MemberInfo m = (MemberInfo) members.get(i);
-
-		if (id.equals(m.getUserId()) && pw.equals(m.getUserPw())) {
-
-			name = m.getUserName();
-			photo = m.getUserPhoto();
-			break;
-		}
-	}
 
 	if (id == null) {
 %>
@@ -36,6 +17,25 @@
 	location.href = 'loginForm.jsp';
 </script>
 <%
+	} else {
+
+		//List 객체 선언
+		//지역변수 개념이다. 초기화 꼭 필요함
+		List members = new ArrayList();
+
+		members = (List) application.getAttribute("k1");
+
+		for (int i = 0; i < members.size(); i++) {
+			//메서드 사용하기위해 형변환
+			MemberInfo m = (MemberInfo) members.get(i);
+
+			if (id.equals(m.getUserId()) && pw.equals(m.getUserPw())) {
+
+				name = m.getUserName();
+
+				break;
+			}
+		}
 	}
 %>
 <!DOCTYPE html>
