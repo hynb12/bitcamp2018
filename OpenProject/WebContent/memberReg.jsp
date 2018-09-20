@@ -1,5 +1,9 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!-- import -->
@@ -7,31 +11,50 @@
 <%
 	request.setCharacterEncoding("utf-8");
 
-	String userId = request.getParameter("userId");
-	String password = request.getParameter("password");
-	String userName = request.getParameter("userName");
-	String photoFile = request.getParameter("photoFile");
+	int mno = Integer.parseInt(request.getParameter("userno"));
+	String id = request.getParameter("userId");
+	String pw = request.getParameter("password");
+	String name = request.getParameter("userName");
+	String pic = request.getParameter("photoFile");
 
-	//MemberInfo 객체 선언
-	MemberInfo member = null;
-	member = new MemberInfo();
-	member.setUserId(userId);
-	member.setUserPw(password);
-	member.setUserName(userName);
-	member.setUserPhoto(photoFile);
+	//1. 데이터베이스 드라이버 로드
+	Class.forName("oracle.jdbc.driver.OracleDriver");
 
-	//List 객체 선언
-	//지역변수 개념이다. 초기화 꼭 필요함
-	List members = null;
-	members = new ArrayList();
+	Connection conn = null;
+	PreparedStatement pstmt = null;
+	int resultCnt = 0;
 
-	//application에 있는지 확인
-	if (application.getAttribute("k1") != null) {
-		members = (List) application.getAttribute("k1");
+	/* String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+	String user = "scott";
+	String pw = "1111"; */
+
+	String jdbcUrl = "jdbc:apache:commons:dbcp:open";
+
+	try {
+		// 2. 커넥션 객체 생성
+		/* conn = DriverManager.getConnection(url, user, pw); */
+		conn = DriverManager.getConnection(jdbcUrl);
+
+		String sql = "insert into TT(mno,id,pw,name,pic) values (?,?,?,?,?)";
+
+		// 3. PreparedStatement 객체 생성
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, mno);
+		pstmt.setString(2, id);
+		pstmt.setString(3, pw);
+		pstmt.setString(4, name);
+		pstmt.setString(5, pic);
+
+		// 4. 쿼리실행
+		resultCnt = pstmt.executeUpdate();
+
+	} catch (Exception e) {
+		e.printStackTrace();
+
+	} finally {
+		pstmt.close();
+		conn.close();
 	}
-
-	members.add(member);
-	application.setAttribute("k1", members);
 %>
 <!DOCTYPE html>
 <html>
@@ -44,19 +67,17 @@
 </head>
 <body>
 	<%@include file="menu.jsp"%>
-	<table>
-		<tr>
-			<th>아이디(이메일)</th>
-			<td><%=userId%></td>
-		</tr>
-		<tr>
-			<th>비밀번호</th>
-			<td><%=password%></td>
-		</tr>
-		<tr>
-			<th>이름</th>
-			<td><%=userName%></td>
-		</tr>
-	</table>
+	<%
+		if (resultCnt > 0) {
+	%>추가완료
+	<%
+		} else {
+	%>
+	추가실패
+	<%
+		}
+	%>
+	<br />
+	<a href="memberList.jsp">돌아가기</a>
 </body>
 </html>

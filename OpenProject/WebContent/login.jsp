@@ -1,20 +1,21 @@
+<%@page import="java.sql.SQLException"%>
+<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.Connection"%>
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
+
 <%@page import="javax.servlet.http.Cookie"%>
 <!-- import -->
 <%@page import="member.MemberInfo"%>
 <%
 	request.setCharacterEncoding("utf-8");
 	//로그인 아이디,비밀번호 받기
-	String id = request.getParameter("userId");
-	String pw = request.getParameter("password");
-
-	//application에 있는지 확인
-	if (application.getAttribute("k1") == null) {
-		response.sendRedirect("index.jsp");
-	}
+	String li_id = request.getParameter("userId");
+	String li_pw = request.getParameter("password");
 
 	//아이디 저장하기 - 선언
 	String chb = "";
@@ -22,23 +23,51 @@
 
 	Cookie cookie = new Cookie("c_id", "");
 
-	//List 객체 선언
-	List members = new ArrayList();
+	//1. 데이터베이스 드라이버 로드
+	Class.forName("oracle.jdbc.driver.OracleDriver");
 
-	members = (List) application.getAttribute("k1");
+	Connection conn = null;
+	Statement stmt = null;
+	ResultSet rs = null;
 
-	if (id != null && pw != null && members != null) {
+	/* String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+	String user = "scott";
+	String pw = "1111"; */
 
-		for (int i = 0; i < members.size(); i++) {
-			//메서드 사용하기위해 형변환
-			MemberInfo m = (MemberInfo) members.get(i);
-			if (id.equals(m.getUserId()) && pw.equals(m.getUserPw())) {
+	String jdbcUrl = "jdbc:apache:commons:dbcp:open";
+
+	try {
+		// 2. 커넥션 객체 생성
+		/* conn = DriverManager.getConnection(url, user, pw); */
+		conn = DriverManager.getConnection(jdbcUrl);
+
+		//3. Statement 객체 생성
+		stmt = conn.createStatement();
+
+		String list_sql = "select ID, PW from TT where id='" + li_id + "'";
+		//스트링타입의 경우 작은따옴표 앞뒤로 써주어야 한다.
+
+		// 4. 쿼리 실행
+		rs = stmt.executeQuery(list_sql);
+
+		String id = "";
+		String pw = "";
+		// 실행할 쿼리문 뒤로 실행문을 넣어준다.
+
+		if (rs.next()) {
+			id = rs.getString("id");
+			pw = rs.getString("pw");
+		}
+
+		if (li_id != null && li_pw != null) {
+
+			if (li_id.equals(rs.getString("id")) && li_pw.equals(rs.getString("pw"))) {
 
 				//기존 세션 정보를 덮어씀
-				request.getSession().setAttribute("userId", id);
+				request.getSession().setAttribute("userId", li_id);
 
 				//비밀 번호
-				request.getSession().setAttribute("password", pw);
+				request.getSession().setAttribute("password", li_pw);
 
 				/* 	1. getSession(), getSession(true)
 				 - HttpSession이 존재하면 현재 HttpSession을 반환하고
@@ -57,15 +86,20 @@
 				response.addCookie(cookie);
 
 				//페이지를 다른곳으로 보냄
-				response.sendRedirect("myPage.jsp");
+				response.sendRedirect("index.jsp");
 			}
 		}
-	}
-	//response.sendRedirect("myPage.jsp"); 가 실행되면 아래 문장들은 실행 되지 않음
 
-	// 아이디 저장 - 쿠키제거
-	cookie.setMaxAge(0);
-	response.addCookie(cookie);
+		// 아이디 저장 - 쿠키제거
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);
+	} catch (Exception e) {
+		e.printStackTrace();
+
+	} finally {
+		stmt.close();
+		conn.close();
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -85,11 +119,11 @@
 		<table>
 			<tr>
 				<th>아이디(이메일)</th>
-				<td><%=id%></td>
+				<td><%=li_id%></td>
 			</tr>
 			<tr>
 				<th>비밀번호</th>
-				<td><%=pw%></td>
+				<td><%=li_pw%></td>
 			</tr>
 		</table>
 		<hr>

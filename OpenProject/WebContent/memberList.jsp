@@ -1,5 +1,8 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!-- import -->
@@ -33,7 +36,7 @@ td, th {
 				<table>
 					<tbody id="tt">
 						<tr>
-							<th>index</th>
+							<th>회원번호</th>
 							<th>아이디</th>
 							<th>비밀번호</th>
 							<th>이름</th>
@@ -41,34 +44,81 @@ td, th {
 							<th>관리</th>
 						</tr>
 						<%
-							//List 객체 선언
-							List members = new ArrayList();
+							// 1. 데이터베이스 드라이버 로드
+							Class.forName("oracle.jdbc.driver.OracleDriver");
 
-							//application에 있는지 확인
-							if (application.getAttribute("k1") != null) {
-								members = (List) application.getAttribute("k1");
+							Connection conn = null;
+							Statement stmt = null;
+							ResultSet rs = null;
 
-								for (int i = 0; i < members.size(); i++) {
-									//메서드 사용하기위해 형변환
-									MemberInfo m = (MemberInfo) members.get(i);
+							/* String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+							String user = "scott";
+							String pw = "1111"; */
+
+							String jdbcUrl = "jdbc:apache:commons:dbcp:open";
+
+							try {
+								// 2. 커넥션 객체 생성
+								/* conn = DriverManager.getConnection(url, user, pw); */
+								conn = DriverManager.getConnection(jdbcUrl);
+
+								// 3. Statement 객체 생성
+								stmt = conn.createStatement();
+
+								String list_sql = "select * from TT order by mno";
+
+								// 4. 쿼리 실행
+								rs = stmt.executeQuery(list_sql);
+
+								if (rs.next()) {
+									do {
 						%>
 						<tr>
-							<th><%=i + 1%></th>
-							<th><%=m.getUserId()%></th>
-							<th><%=m.getUserPw()%></th>
-							<th><%=m.getUserName()%></th>
-							<th><%=m.getUserPhoto()%></th>
+							<th><%=rs.getInt("MNO")%></th>
+							<th><%=rs.getString("ID")%></th>
+							<th><%=rs.getString("PW")%></th>
+							<th><%=rs.getString("NAME")%></th>
+							<th><%=rs.getString("PIC")%></th>
 							<th><a
-								href="<%=request.getContextPath()%>/revise.jsp?index=<%=i%>"
-								name="index">수정</a> <a
-								href="<%=request.getContextPath()%>/delete.jsp?index=<%=i%>"
-								name="index">삭제</a></th>
+								href="<%=request.getContextPath()%>/revise.jsp?mno=<%=rs.getInt("MNO")%>"
+								name="mno">수정</a> <a
+								href="<%=request.getContextPath()%>/delete.jsp?mno=<%=rs.getInt("MNO")%>"
+								name="mno">삭제</a></th>
+						</tr>
+						<%
+							} while (rs.next());
+								} else {
+						%>
+						<tr>
+							<td colspan="6">등록된 사원정보가 없습니다.</td>
 						</tr>
 						<%
 							}
+							} finally {
+								if (rs != null) {
+									try {
+										rs.close();
+									} catch (SQLException se) {
+										se.printStackTrace();
+									}
+								}
+								if (stmt != null) {
+									try {
+										stmt.close();
+									} catch (SQLException se) {
+										se.printStackTrace();
+									}
+								}
+								if (conn != null) {
+									try {
+										conn.close();
+									} catch (SQLException se) {
+										se.printStackTrace();
+									}
+								}
 							}
 						%>
-					</tbody>
+					
 				</table>
 
 			</div>

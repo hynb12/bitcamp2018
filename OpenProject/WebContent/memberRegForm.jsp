@@ -22,6 +22,10 @@
 			method="post">
 			<table>
 				<tr>
+					<th>회원번호</th>
+					<td><input type="text" name="userno"></td>
+				</tr>
+				<tr>
 					<th>아이디(이메일)</th>
 					<td><input type="text" name="userId"></td>
 				</tr>
