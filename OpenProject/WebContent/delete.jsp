@@ -54,11 +54,10 @@
 		} else {
 	%>
 	삭제실패
-
 	<%
 		}
 	%>
 	<br />
-	<a href="memberList.jsp"">돌아가기</a>
+	<a href="memberList.jsp">돌아가기</a>
 </body>
 </html>
