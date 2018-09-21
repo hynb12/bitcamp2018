@@ -81,8 +81,8 @@
 				<input type="text" name="u_pic" value="<%=rs.getString("pic")%>" />
 			</div>
 			<div>
-				<input type="reset" value="취소" name="cancel"> <input
-					type="submit" value="수정" name="revise">
+				<input type="reset" value="취소" name="cancel">
+				<input type="submit" value="수정" name="revise">
 			</div>
 		</div>
 	</form>

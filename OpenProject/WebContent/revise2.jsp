@@ -67,17 +67,14 @@
 <body>
 	<%
 		if (resultCnt > 0) {
-	%>수정완료
-
-	<%
+	%>수정완료<%
 		} else {
 	%>
 	수정실패
-	<br>
-
 	<%
 		}
-	%><br>
+	%>
+	<br>
 	<a href="memberList.jsp">돌아가기</a>
 </body>
 </html>
