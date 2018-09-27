@@ -25,7 +25,8 @@
 <title>Login Form</title>
 <style>
 </style>
-<link rel="stylesheet" href="css/default.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>css/default.css">
 
 </head>
 <body>
@@ -33,7 +34,7 @@
 	<div>
 		<h2>로그인</h2>
 		<hr>
-		<form action="login.jsp" method="post">
+		<form action="<%=request.getContextPath()%>/login.jsp" method="post">
 			<table>
 				<tr>
 					<th>아이디(이메일)</th>

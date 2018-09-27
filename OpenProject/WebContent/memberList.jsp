@@ -22,7 +22,8 @@ td, th {
 	border: 1px solid black;
 }
 </style>
-<link rel="stylesheet" href="css/default.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>css/default.css">
 </head>
 <body>
 	<%@include file="menu.jsp"%>

@@ -15,7 +15,7 @@
 	String id = request.getParameter("userId");
 	String pw = request.getParameter("password");
 	String name = request.getParameter("userName");
-	String pic = request.getParameter("photoFile");
+	String pic = request.getParameter("file");
 
 	//1. 데이터베이스 드라이버 로드
 	Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -63,7 +63,7 @@
 <title>memberReg</title>
 <style>
 </style>
-<link rel="stylesheet" href="css/default.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>css/default.css">
 </head>
 <body>
 	<%@include file="menu.jsp"%>

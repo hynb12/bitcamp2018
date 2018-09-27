@@ -75,6 +75,6 @@
 		}
 	%>
 	<br>
-	<a href="memberList.jsp">돌아가기</a>
+	<a href="<%=request.getContextPath()%>memberList.jsp">돌아가기</a>
 </body>
 </html>

@@ -86,7 +86,7 @@
 				response.addCookie(cookie);
 
 				//페이지를 다른곳으로 보냄
-				response.sendRedirect("index.jsp");
+				response.sendRedirect("mypage/myPage.jsp");
 			}
 		}
 

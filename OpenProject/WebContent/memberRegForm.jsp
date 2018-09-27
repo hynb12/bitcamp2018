@@ -10,7 +10,8 @@
 <title>memberRegForm</title>
 <style>
 </style>
-<link rel="stylesheet" href="css/default.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>css/default.css">
 </head>
 <body>
 	<%@include file="menu.jsp"%>
@@ -39,7 +40,7 @@
 				</tr>
 				<tr>
 					<th>사진</th>
-					<td><input type="file" name="photoFile"></td>
+					<td><input type="file" name="file"></td>
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align: center"><input

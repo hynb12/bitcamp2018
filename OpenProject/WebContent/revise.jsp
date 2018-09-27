@@ -54,7 +54,7 @@
 <title>수정</title>
 <style>
 </style>
-<link rel="stylesheet" href="css/default.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>css/default.css">
 </head>
 <body>
 	<form action="<%=request.getContextPath()%>/revise2.jsp" method="post">
