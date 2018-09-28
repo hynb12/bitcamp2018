@@ -8,7 +8,7 @@
 <!-- import -->
 <%@page import="member.MemberInfo"%>
 <%
-	int mno = Integer.parseInt(request.getParameter("mno"));
+	int idx = Integer.parseInt(request.getParameter("idx"));
 
 	//1. 데이터베이스 드라이버 로드
 	Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -29,7 +29,7 @@
 	//3. Statement 객체 생성
 	stmt = conn.createStatement();
 
-	String list_sql = "select * from TT where mno=" + mno;
+	String list_sql = "select * from TT where idx=" + idx;
 	//스트링타입의 경우 작은따옴표 앞뒤로 써주어야 한다.
 
 	// 4. 쿼리 실행
@@ -54,14 +54,14 @@
 <title>수정</title>
 <style>
 </style>
-<link rel="stylesheet" href="<%=request.getContextPath()%>css/default.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/default.css">
 </head>
 <body>
 	<form action="<%=request.getContextPath()%>/revise2.jsp" method="post">
 		<div id="rezone">
 			<div>
 				<p>회원번호</p>
-				<input type="text" name="u_num" value="<%=rs.getInt("mno")%>"
+				<input type="text" name="u_num" value="<%=rs.getInt("idx")%>"
 					readonly />
 			</div>
 			<div>

@@ -108,7 +108,6 @@
 <title>Login</title>
 <style>
 </style>
-<link rel="stylesheet" href="css/default.css">
 </head>
 <body>
 	<%@include file="menu.jsp"%>

@@ -26,7 +26,7 @@
 <style>
 </style>
 <link rel="stylesheet"
-	href="<%=request.getContextPath()%>css/default.css">
+	href="<%=request.getContextPath()%>/css/default.css">
 
 </head>
 <body>

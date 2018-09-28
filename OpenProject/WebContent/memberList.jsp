@@ -1,3 +1,5 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.DriverManager"%>
@@ -9,6 +11,53 @@
 <%@page import="member.MemberInfo"%>
 <%
 	request.setCharacterEncoding("utf-8");
+%>
+<%
+	// 1. 데이터베이스 드라이버 로드
+	Class.forName("oracle.jdbc.driver.OracleDriver");
+
+	Connection conn = null;
+	Statement stmt = null;
+	ResultSet rs = null;
+
+	/* String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+	String user = "scott";
+	String pw = "1111"; */
+
+	List<MemberInfo> members = new ArrayList<MemberInfo>();
+
+	String jdbcUrl = "jdbc:apache:commons:dbcp:open";
+
+	try {
+		// 2. 커넥션 객체 생성
+		/* conn = DriverManager.getConnection(url, user, pw); */
+		conn = DriverManager.getConnection(jdbcUrl);
+
+		// 3. Statement 객체 생성
+		stmt = conn.createStatement();
+
+		String list_sql = "select * from TT";
+
+		// 4. 쿼리 실행
+		rs = stmt.executeQuery(list_sql);
+
+		while (rs.next()) {
+			MemberInfo memberInfo = new MemberInfo();
+			memberInfo.setIdx(rs.getInt("idx"));
+			memberInfo.setUserId(rs.getString("id"));
+			memberInfo.setUserPw(rs.getString("pw"));
+			memberInfo.setUserName(rs.getString("name"));
+			memberInfo.setUserPhoto(rs.getString("pic"));
+
+			members.add(memberInfo);
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		rs.close();
+		stmt.close();
+		conn.close();
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -23,7 +72,7 @@ td, th {
 }
 </style>
 <link rel="stylesheet"
-	href="<%=request.getContextPath()%>css/default.css">
+	href="<%=request.getContextPath()%>/css/default.css">
 </head>
 <body>
 	<%@include file="menu.jsp"%>
@@ -37,7 +86,6 @@ td, th {
 				<table>
 					<tbody id="tt">
 						<tr>
-							<th>회원번호</th>
 							<th>아이디</th>
 							<th>비밀번호</th>
 							<th>이름</th>
@@ -45,78 +93,18 @@ td, th {
 							<th>관리</th>
 						</tr>
 						<%
-							// 1. 데이터베이스 드라이버 로드
-							Class.forName("oracle.jdbc.driver.OracleDriver");
-
-							Connection conn = null;
-							Statement stmt = null;
-							ResultSet rs = null;
-
-							/* String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-							String user = "scott";
-							String pw = "1111"; */
-
-							String jdbcUrl = "jdbc:apache:commons:dbcp:open";
-
-							try {
-								// 2. 커넥션 객체 생성
-								/* conn = DriverManager.getConnection(url, user, pw); */
-								conn = DriverManager.getConnection(jdbcUrl);
-
-								// 3. Statement 객체 생성
-								stmt = conn.createStatement();
-
-								String list_sql = "select * from TT order by mno";
-
-								// 4. 쿼리 실행
-								rs = stmt.executeQuery(list_sql);
-
-								if (rs.next()) {
-									do {
+							for (int i = 0; i < members.size(); i++) {
+								MemberInfo member = members.get(i);
 						%>
 						<tr>
-							<th><%=rs.getInt("MNO")%></th>
-							<th><%=rs.getString("ID")%></th>
-							<th><%=rs.getString("PW")%></th>
-							<th><%=rs.getString("NAME")%></th>
-							<th><%=rs.getString("PIC")%></th>
-							<th><a
-								href="<%=request.getContextPath()%>/revise.jsp?mno=<%=rs.getInt("MNO")%>"
-								name="mno">수정</a> <a
-								href="<%=request.getContextPath()%>/delete.jsp?mno=<%=rs.getInt("MNO")%>"
-								name="mno">삭제</a></th>
+							<td><%=member.getUserId()%></td>
+							<td><%=member.getUserPw()%></td>
+							<td><%=member.getUserName()%></td>
+							<td><%=member.getUserPhoto()%></td>
+							<td><a href="revise.jsp?idx=<%=member.getIdx()%>">수정</a> <a
+								href="delete.jsp?idx=<%=member.getIdx()%>">삭제</a></td>
 						</tr>
 						<%
-							} while (rs.next());
-								} else {
-						%>
-						<tr>
-							<td colspan="6">등록된 사원정보가 없습니다.</td>
-						</tr>
-						<%
-							}
-							} finally {
-								if (rs != null) {
-									try {
-										rs.close();
-									} catch (SQLException se) {
-										se.printStackTrace();
-									}
-								}
-								if (stmt != null) {
-									try {
-										stmt.close();
-									} catch (SQLException se) {
-										se.printStackTrace();
-									}
-								}
-								if (conn != null) {
-									try {
-										conn.close();
-									} catch (SQLException se) {
-										se.printStackTrace();
-									}
-								}
 							}
 						%>
 					

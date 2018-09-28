@@ -9,7 +9,7 @@
 <!-- import -->
 <%@page import="member.MemberInfo"%>
 <%
-	int mno = Integer.parseInt(request.getParameter("mno"));
+	int idx = Integer.parseInt(request.getParameter("idx"));
 
 	// 1. JDBC 드라이버 로딩
 	Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -26,9 +26,9 @@
 		conn = DriverManager.getConnection(jdbcUrl);
 
 		// 3. PreparedStatement 객체 생성
-		String sql = "DELETE FROM TT WHERE mno = ? ";
+		String sql = "DELETE FROM TT WHERE idx = ? ";
 		pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, mno);
+		pstmt.setInt(1, idx);
 
 		resultCnt = pstmt.executeUpdate();
 	} finally {
@@ -44,7 +44,6 @@
 <title>Logout</title>
 <style>
 </style>
-<link rel="stylesheet" href="<%=request.getContextPath()%>css/default.css">
 </head>
 <body>
 	<%

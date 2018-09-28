@@ -11,7 +11,7 @@
 <style>
 </style>
 <link rel="stylesheet"
-	href="<%=request.getContextPath()%>css/default.css">
+	href="<%=request.getContextPath()%>/css/default.css">
 </head>
 <body>
 	<%@include file="menu.jsp"%>
@@ -20,12 +20,8 @@
 		<hr>
 		<!--request.getContextPath() : /firstWeb (프로젝트위치)	-->
 		<form action="<%=request.getContextPath()%>/memberReg.jsp"
-			method="post">
+			method="post" enctype="multipart/form-data">
 			<table>
-				<tr>
-					<th>회원번호</th>
-					<td><input type="text" name="userno"></td>
-				</tr>
 				<tr>
 					<th>아이디(이메일)</th>
 					<td><input type="text" name="userId"></td>
@@ -40,7 +36,7 @@
 				</tr>
 				<tr>
 					<th>사진</th>
-					<td><input type="file" name="file"></td>
+					<td><input type="file" name="photoFile"></td>
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align: center"><input

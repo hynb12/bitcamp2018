@@ -9,7 +9,7 @@
 <!-- import -->
 <%@page import="member.MemberInfo"%>
 <%
-	int mno = Integer.parseInt(request.getParameter("u_num"));
+	int idx = Integer.parseInt(request.getParameter("u_num"));
 	String id = (String) request.getParameter("u_id");
 	String pw = (String) request.getParameter("u_pw");
 	String name = (String) request.getParameter("u_name");
@@ -33,7 +33,7 @@
 		/* conn = DriverManager.getConnection(url, user, pw); */
 		conn = DriverManager.getConnection(jdbcUrl);
 
-		String sql = "update TT set id = ?, pw = ?, name = ?, pic = ? where mno = ?";
+		String sql = "update TT set id = ?, pw = ?, name = ?, pic = ? where idx = ?";
 
 		// 3. PreparedStatement 객체 생성
 		pstmt = conn.prepareStatement(sql);
@@ -42,7 +42,7 @@
 		pstmt.setString(2, pw);
 		pstmt.setString(3, name);
 		pstmt.setString(4, pic);
-		pstmt.setInt(5, mno);
+		pstmt.setInt(5, idx);
 
 		// 4. 쿼리실행
 		resultCnt = pstmt.executeUpdate();
@@ -75,6 +75,6 @@
 		}
 	%>
 	<br>
-	<a href="<%=request.getContextPath()%>memberList.jsp">돌아가기</a>
+	<a href="<%=request.getContextPath()%>/memberList.jsp">돌아가기</a>
 </body>
 </html>

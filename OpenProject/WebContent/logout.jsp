@@ -15,7 +15,7 @@
 <title>Logout</title>
 <style>
 </style>
-<link rel="stylesheet" href="<%=request.getContextPath()%>css/default.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/default.css">
 </head>
 <body>
 
