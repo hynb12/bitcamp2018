@@ -30,7 +30,7 @@
 
 </head>
 <body>
-	<%@include file="menu.jsp"%>
+	<%@include file="common/header.jsp"%>
 	<div>
 		<h2>로그인</h2>
 		<hr>

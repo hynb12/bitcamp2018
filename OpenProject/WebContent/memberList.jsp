@@ -75,7 +75,7 @@ td, th {
 	href="<%=request.getContextPath()%>/css/default.css">
 </head>
 <body>
-	<%@include file="menu.jsp"%>
+	<%@include file="common/header.jsp"%>
 	<form action="">
 
 		<!--     메인    -->

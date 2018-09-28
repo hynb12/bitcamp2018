@@ -127,7 +127,7 @@
 </style>
 </head>
 <body>
-	<%@include file="menu.jsp"%>
+	<%@include file="common/header.jsp"%>
 	<table>
 		<tr>
 			<th>아이디(이메일)</th>

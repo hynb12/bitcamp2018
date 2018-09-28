@@ -14,7 +14,7 @@
 	href="<%=request.getContextPath()%>/css/default.css">
 </head>
 <body>
-	<%@include file="menu.jsp"%>
+	<%@include file="common/header.jsp"%>
 	<div>
 		<h2>회원가입</h2>
 		<hr>

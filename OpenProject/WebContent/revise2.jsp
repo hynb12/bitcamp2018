@@ -9,11 +9,12 @@
 <!-- import -->
 <%@page import="member.MemberInfo"%>
 <%
-	int idx = Integer.parseInt(request.getParameter("u_num"));
-	String id = (String) request.getParameter("u_id");
-	String pw = (String) request.getParameter("u_pw");
-	String name = (String) request.getParameter("u_name");
-	String pic = (String) request.getParameter("u_pic");
+	request.setCharacterEncoding("utf-8");
+
+	int idx = Integer.parseInt(request.getParameter("idx"));
+	String userId = request.getParameter("userId");
+	String password = request.getParameter("password");
+	String userName = request.getParameter("userName");
 
 	//1. 데이터베이스 드라이버 로드
 	Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -33,16 +34,15 @@
 		/* conn = DriverManager.getConnection(url, user, pw); */
 		conn = DriverManager.getConnection(jdbcUrl);
 
-		String sql = "update TT set id = ?, pw = ?, name = ?, pic = ? where idx = ?";
+		String sql = "update TT set pw = ?, name = ? where idx = ?";
 
 		// 3. PreparedStatement 객체 생성
 		pstmt = conn.prepareStatement(sql);
 
-		pstmt.setString(1, id);
-		pstmt.setString(2, pw);
-		pstmt.setString(3, name);
-		pstmt.setString(4, pic);
-		pstmt.setInt(5, idx);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, password);
+		pstmt.setString(2, userName);
+		pstmt.setInt(3, idx);
 
 		// 4. 쿼리실행
 		resultCnt = pstmt.executeUpdate();
@@ -65,16 +65,35 @@
 
 </head>
 <body>
-	<%
-		if (resultCnt > 0) {
-	%>수정완료<%
-		} else {
-	%>
-	수정실패
-	<%
-		}
-	%>
-	<br>
-	<a href="<%=request.getContextPath()%>/memberList.jsp">돌아가기</a>
+	<%@ include file="common/header.jsp"%>
+
+
+	<div id="contents">
+
+		<h2>회원가입 수정</h2>
+
+		<hr>
+		<table>
+			<tr>
+				<td>아이디(이메일)</td>
+				<td><%=userId%></td>
+			</tr>
+			<tr>
+				<td>비밀번호</td>
+				<td><%=password%></td>
+			</tr>
+			<tr>
+				<td>이름</td>
+				<td><%=userName%></td>
+			</tr>
+			<tr>
+				<td>사진</td>
+				<td></td>
+			</tr>
+		</table>
+
+
+
+	</div>
 </body>
 </html>

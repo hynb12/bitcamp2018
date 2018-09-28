@@ -8,9 +8,23 @@
 	pageEncoding="UTF-8"%>
 <!-- import -->
 <%@page import="member.MemberInfo"%>
-<%
-	int idx = Integer.parseInt(request.getParameter("idx"));
 
+
+<%
+	int indexNo = -1;
+	String idx = request.getParameter("idx");
+
+	if (idx != null) {
+		indexNo = Integer.parseInt(idx);
+	}
+	if (indexNo < 0) {
+%>
+<script>
+	alert('부적절한 인덱스값이 전달되었습니다.\n이전페이지로 돌아갑니다.');
+	history.go(-1);
+</script>
+<%
+	}
 	// 1. JDBC 드라이버 로딩
 	Class.forName("oracle.jdbc.driver.OracleDriver");
 
@@ -28,15 +42,18 @@
 		// 3. PreparedStatement 객체 생성
 		String sql = "DELETE FROM TT WHERE idx = ? ";
 		pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, idx);
+		pstmt.setString(1, idx);
 
 		resultCnt = pstmt.executeUpdate();
+
+	} catch (Exception e) {
+		e.printStackTrace();
+
 	} finally {
 		pstmt.close();
 		conn.close();
 	}
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,15 +65,12 @@
 <body>
 	<%
 		if (resultCnt > 0) {
-	%>삭제완료
-	<%
+	%>삭제완료<%
 		} else {
-	%>
-	삭제실패
-	<%
+	%>삭제실패<%
 		}
 	%>
-	<br />
+	<br>
 	<a href="memberList.jsp">돌아가기</a>
 </body>
 </html>

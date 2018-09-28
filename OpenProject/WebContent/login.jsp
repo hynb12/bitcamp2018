@@ -110,7 +110,7 @@
 </style>
 </head>
 <body>
-	<%@include file="menu.jsp"%>
+	<%@include file="common/header.jsp"%>
 
 	<div id="contents">
 		<h2>로그인</h2>
